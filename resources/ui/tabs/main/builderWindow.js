@@ -23,16 +23,20 @@ function BuildWindow(title) {
     var myPagesData = [];
     var simulatorType = 'list';
     
-    getAppData(2);
+    //getAppData(2);
     
     function getAppData(params){
-        var url = "http://104.131.33.138:3000/api/appdata?filter={%22where%22:{%22id%22:"+ params + "}}";
+        //var url = "http://104.131.33.138:3000/api/appdata?filter={%22where%22:{%22id%22:"+ params + "}}";
+        var url = "http://127.0.0.1:3000/api/appdata";
         var client = Ti.Network.createHTTPClient({
              onload : function(e) {
-                 Ti.API.info("Received text: " + this.responseText);
+                 var obj = JSON.parse(this.responseText);
+                 Ti.App.Properties.setObject('pageIndex',obj);
                  ///////////////////////////////////////////////
                  // Redirect here to Thank you / Welcome Page //
                  ///////////////////////////////////////////////
+                 reloadMyPages();
+        		 loadSimulator();
              },
              onerror : function(e) {
                  Ti.API.debug(e.error);
@@ -40,9 +44,6 @@ function BuildWindow(title) {
              },
              timeout : 5000  // in milliseconds
         });
-        params={
-            "where":{"id":2}
-        };
         // Prepare the connection.
         client.open("GET", url);
         // Send the request.
@@ -51,7 +52,6 @@ function BuildWindow(title) {
     init();
 
     function init (){
-       
         appBuilder.add(new headerView);
         appBuilder.add(new footerView);
         createContainer();
@@ -1006,14 +1006,9 @@ function BuildWindow(title) {
             separatorColor:'#333',
             backgroundColor:'transparent'
         });
-        appBuilder.simulator.temp=Titanium.UI.createWebView({
-            url:'http://m.westpalmbeachhomesandcondos.com/p/',
-            top:'0dp',
-            height:'490dp',
-        });
+        
         appBuilder.simulator.header.add(appBuilder.simulator.headerTitle);
         appBuilder.simulator.tableViews.add(appBuilder.simulator.tableview);
-        //appBuilder.simulator.tableViews.add(appBuilder.simulator.temp);
         appBuilder.simulator.add(appBuilder.simulator.header);
         
         appBuilder.simulator.tabViewTop = Titanium.UI.createView({
@@ -1365,7 +1360,8 @@ function BuildWindow(title) {
             	appBuilder.simulator.header.top='0dp';
                 appBuilder.simulator.header.bottom=null;
                 for (var i=0; i<pageData.length; i++)
-                {
+                {	
+                	Ti.API.info(JSON.stringify(pageData[i]));
                     var row = Titanium.UI.createTableViewRow({
                         height:'60dp',
                         pageType:pageData[i].pageType,
@@ -1773,7 +1769,7 @@ function BuildWindow(title) {
         }
     });
 
-    /*appBuilder.simulator.addEventListener('click', function (e){
+    appBuilder.simulator.addEventListener('click', function (e){
        Ti.API.info(e.source.pageType);
        var newPage = Ti.UI.createWindow({
             url:'ui/tabs/simulator/' +  e.source.pageType + '.js',
@@ -1786,7 +1782,7 @@ function BuildWindow(title) {
             modal:true,
         });
         appBuilder.simulator.add(newPage);
-    });*/
+    });
 
     appBuilder.navigationView.addEventListener('dragend', function (e){
          Ti.API.info("Image Scrolled current page: " + e.currentPage);

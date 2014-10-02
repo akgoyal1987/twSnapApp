@@ -166,7 +166,7 @@ function LoginWindow(title) {
             'data[AppUser][email]': loginView.Username.value,
             'data[AppUser][password]':loginView.Pass.value,
         };
-        Login(regParams);
+        //Login(regParams);
     });
     
     loginView.Username.addEventListener('change', function(e) {
@@ -380,7 +380,6 @@ function LoginWindow(title) {
              },
              onerror : function(e) {
                  Ti.API.debug(e.error);
-                
              },
              timeout : 5000  // in milliseconds
         });
