@@ -17,6 +17,10 @@
         width:'100%',
         backgroundColor:'#333'
     });
+    var webview = Ti.UI.createWebView({
+		url: 'html/filechooser.html'
+	});
+	pageHeader.add(webview);
     pageHeaderTitle = Titanium.UI.createLabel({
         text:'Edit Page: ' + data.pageType,
         font: customFont
@@ -102,8 +106,8 @@
     });
     
     addCatButton = Titanium.UI.createImageView({
-            image:'images/build/add.png',
-        });
+        image:'images/build/add.png',
+    });
         
     pageFieldLabel.add(addCatButton);
     pageFieldLabel.add(addCategoryLabel);
@@ -123,7 +127,7 @@
         if (e.source.id=='add'){
             rowToAdd = e.index;
             addRow(rowToAdd);
-            }
+        }
     });
     
     function addRow(rowToAdd){
@@ -139,6 +143,13 @@
                 left:'5dp',
                 top:'5dp'
             });
+            
+            rowImage.addEventListener('click', function(e) {
+				Ti.App.fireEvent('app:fromTitanium', { callback: function(imageurl){
+						rowImage.image = imageurl;
+					} 
+				});
+			});
             
             var rowTitle = Titanium.UI.createTextField({
                 font:formFont,
@@ -223,16 +234,17 @@
             left:'5dp',
             top:'5dp'
         });
-        Ti.App.addEventListener('app:fromWebView', function(e) {
-        	headerImage.image = e.message;
-			//alert(e.message);
-		});
-        var webview = Ti.UI.createWebView({
-			url: 'html/filechooser.html'
-		});
+        // Ti.App.addEventListener('app:fromWebView', function(e) {
+        	// headerImage.image = e.message;
+		// });
+        
         headerImage.addEventListener('click', function(e) {
-			Ti.App.fireEvent('app:fromTitanium', { message: 'event fired from Titanium, handled in WebView' });
+			Ti.App.fireEvent('app:fromTitanium', { callback: function(imageurl){
+					headerImage.image = imageurl;
+				} 
+			});
 		});
+		
         var headerTitle = Titanium.UI.createTextField({
             font:formFont,
             width : '45%',
@@ -252,7 +264,6 @@
             left:'65%',
             id:'add',
         });
-        newHeader.add(webview);
         newHeader.add(buttonRow);
         
         var rowDeleteButton = Titanium.UI.createImageView({
@@ -374,11 +385,11 @@
         allIcons.open();
     }
     
-    webview = Titanium.UI.createWebView({
-        url:'http://myfreeapp.com/temp/livePreviewExamples.html',
-        width:'515dp',
-        height:'450dp'
-    });
+    // webview = Titanium.UI.createWebView({
+        // url:'http://myfreeapp.com/temp/livePreviewExamples.html',
+        // width:'515dp',
+        // height:'450dp'
+    // });
     
     scrollView.add(pageHeader);
     scrollView.add(pageConstants);

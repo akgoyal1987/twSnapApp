@@ -32,7 +32,14 @@ function BuildWindow(title) {
         var client = Ti.Network.createHTTPClient({
              onload : function(e) {
                  var obj = JSON.parse(this.responseText);
-                 Ti.App.Properties.setObject('pageIndex',obj);
+                 Ti.App.Properties.setObject('AppInfo',{
+                 	"fbfeed":obj.fbfeed,
+                 	"twfeed":obj.twfeed,
+                 	"phone":obj.phone,
+                 	"email":obj.email,
+                 	"id":obj.id      	
+				 });
+                 Ti.App.Properties.setObject('pageIndex',obj.about);
                  ///////////////////////////////////////////////
                  // Redirect here to Thank you / Welcome Page //
                  ///////////////////////////////////////////////

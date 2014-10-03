@@ -4,7 +4,9 @@
 	<script>
 		$(document).ready(function(){
 			var Ti = window.parent.Ti;
+			var callback;
 			Ti.App.addEventListener("app:fromTitanium", function(e) {
+				callback=e.callback;
 				$('.imagefile').click();
 			});
 			$('.imagefile').change(function(e){
@@ -21,8 +23,9 @@
 					data:  "appid=1",
 					mimeType:"multipart/form-data",
 					success: function(response, textStatus, jqXHR){
-						var data = JSON.parse(response); 
-						Ti.App.fireEvent('app:fromWebView', { message: data.uploadimage });	
+						var data = JSON.parse(response);
+						callback(data.uploadimage); 
+						//Ti.App.fireEvent('app:fromWebView', { message: data.uploadimage });	
 					},
 					error: function(jqXHR, textStatus, errorThrown){
 						
