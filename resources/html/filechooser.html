@@ -1,0 +1,38 @@
+<html>
+	<head>
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			var Ti = window.parent.Ti;
+			Ti.App.addEventListener("app:fromTitanium", function(e) {
+				$('.imagefile').click();
+			});
+			$('.imagefile').change(function(e){
+				var formData = new FormData();
+				var files = e.target.files;
+				$.each(files, function(key, value){
+					formData.append(key, value);	
+				});
+				formData.append("appid", "2");
+				formData.append("imagename", "categoryIcon1");
+				 $.ajax({
+					url: "http://localhost:3000/uploadimage",
+					type: 'POST',
+					data:  "appid=1",
+					mimeType:"multipart/form-data",
+					success: function(response, textStatus, jqXHR){
+						var data = JSON.parse(response); 
+						Ti.App.fireEvent('app:fromWebView', { message: data.uploadimage });	
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						
+					}         
+				}); 
+			});
+		});
+	</script>
+	</head>
+	<body>
+		<input type="file" name="myfile" class="imagefile" style="display:none"/>
+	</body>
+</html>

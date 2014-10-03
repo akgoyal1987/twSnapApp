@@ -11,7 +11,7 @@
     <property name="ti.android.useLegacyWindow" type="bool">true</property>
     <property name="ti.ui.defaultunit" type="string">dp</property>
     <property name="ti.facebook.appid">103458446491218</property>
-    <sdk-version>3.3.0.GA</sdk-version>
+    <sdk-version>3.4.0.GA</sdk-version>
     <id>com.multaply.appBuilder</id>
     <name>AppBuilder</name>
     <version>3.2.2</version>
@@ -19,7 +19,6 @@
     <url>http://appcelerator.com</url>
     <description>not specified</description>
     <copyright>2014 by appcelerator</copyright>
-    <icon>/Users/gruby20/Dropbox/AppBuilder/resources/mobileweb/appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
     <statusbar-style>default</statusbar-style>

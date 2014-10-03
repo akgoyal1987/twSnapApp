@@ -223,7 +223,16 @@
             left:'5dp',
             top:'5dp'
         });
-        
+        Ti.App.addEventListener('app:fromWebView', function(e) {
+        	headerImage.image = e.message;
+			//alert(e.message);
+		});
+        var webview = Ti.UI.createWebView({
+			url: 'html/filechooser.html'
+		});
+        headerImage.addEventListener('click', function(e) {
+			Ti.App.fireEvent('app:fromTitanium', { message: 'event fired from Titanium, handled in WebView' });
+		});
         var headerTitle = Titanium.UI.createTextField({
             font:formFont,
             width : '45%',
@@ -243,6 +252,7 @@
             left:'65%',
             id:'add',
         });
+        newHeader.add(webview);
         newHeader.add(buttonRow);
         
         var rowDeleteButton = Titanium.UI.createImageView({

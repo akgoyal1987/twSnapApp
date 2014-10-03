@@ -23,11 +23,12 @@ function BuildWindow(title) {
     var myPagesData = [];
     var simulatorType = 'list';
     
-    //getAppData(2);
+    getAppData(2);
     
     function getAppData(params){
         //var url = "http://104.131.33.138:3000/api/appdata?filter={%22where%22:{%22id%22:"+ params + "}}";
-        var url = "http://127.0.0.1:3000/api/appdata";
+        //var url = "http://127.0.0.1:3000/api/appdata/";
+        var url = "http://104.131.33.138:3000/api/appdata/1";
         var client = Ti.Network.createHTTPClient({
              onload : function(e) {
                  var obj = JSON.parse(this.responseText);
@@ -1732,7 +1733,27 @@ function BuildWindow(title) {
         });
         addPage.open();
     });
-    
+    appBuilder.self.saveContentLabel.addEventListener('click', function(){
+        var pageData = Ti.App.Properties.getObject('pageIndex',[]);
+        var appinFo = Ti.App.Properties.getObject('AppInfo',{});
+        appinFo.about = JSON.stringify(pageData);
+        var url = "http://104.131.33.138:3000/api/appdata";
+        var client = Ti.Network.createHTTPClient({
+             onload : function(e) {
+                 //var obj = JSON.parse(this.responseText);
+                 reloadMyPages();
+        		 loadSimulator();
+             },
+             onerror : function(e) {
+                 Ti.API.debug(e.error);
+             },
+             timeout : 5000  // in milliseconds
+        });
+        // Prepare the connection.
+        client.open("PUT", url);
+        // Send the request.
+        client.send(appinFo);
+    });
     appBuilder.self.sortContentLabel.addEventListener('click', function(){
         var addPage = Ti.UI.createWindow({
             url:'/ui/tabs/buildWindow/sortPage.js',
@@ -1768,7 +1789,7 @@ function BuildWindow(title) {
         newPage.open();
         }
     });
-
+	
     appBuilder.simulator.addEventListener('click', function (e){
        Ti.API.info(e.source.pageType);
        var newPage = Ti.UI.createWindow({
