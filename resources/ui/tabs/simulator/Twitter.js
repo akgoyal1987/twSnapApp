@@ -29,6 +29,41 @@
         height:'100%',
         backgroundColor:'#fff'
     });
+    
+    var Codebird = require("/libs/codebird");
+    var cb = new Codebird();
+    cb.setConsumerKey('FrsxffyVFv0ciPy0h0oI9oUwd', 'lOay5qyuEcpdyJJ9Eir32IkTixohPoAjniOzigKKGmvXuA9whV');
+    
+    var bearerToken = Ti.App.Properties.getString('TwitterBearerToken', null);
+    if(bearerToken == null){
+        cb.__call(
+            'oauth2_token',
+            {},
+            function (reply) {
+                var bearer_token = reply.access_token;
+                //cb.setBearerToken(bearer_token);
+                //Ti.App.Properties.setString('TwitterBearerToken', bearer_token);
+                //fetchTwitter();
+            }
+        );
+    } else {
+        Ti.API.info("We do have a bearer token...");
+        //cb.setBearerToken(bearerToken);
+        //fetchTwitter();
+    }
+    
+    
+    function fetchTwitter(){
+        cb.__call(
+            'search_tweets',
+            "q="+Ti.Network.encodeURIComponent("#awesome"),
+            function (reply) {
+                // ...
+                Ti.API.info(reply);
+            },
+            true // this parameter required
+        );
+    }
 
     
     saveButton = Ti.UI.createImageView({

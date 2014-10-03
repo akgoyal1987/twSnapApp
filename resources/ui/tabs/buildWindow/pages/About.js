@@ -112,7 +112,7 @@
         layout:'horizontal',
         left:'12dp'
     });
-    pageField1a = Titanium.UI.createTextField({
+    /*pageField1a = Titanium.UI.createTextField({
         font:formFont,
         width : '20%',
         height : '40dp',
@@ -123,10 +123,43 @@
         textAlign:'center',
         borderRadius:4,
         backgroundColor:'#fff'
+    });*/
+    
+    var pageField1a = Ti.UI.createPicker({
+       width : '45%',
+       height : '120dp',
+          
     });
+    var openTime = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday' ,'Friday', 'Saturday', 'Sunday'];
+    var closeTime = [ 'Friday','Saturday', 'Sunday','Monday', 'Tuesday', 'Wednesday', 'Thursday'];
+    
+    var column1 = Ti.UI.createPickerColumn();
+    
+    for(var i=0; i<openTime.length; i++){
+      var row = Ti.UI.createPickerRow({
+        title: openTime[i],
+        font:formFont
+      });
+      column1.addRow(row);
+    }
+    
+    var column2 = Ti.UI.createPickerColumn();
+    
+    for(var i=0; i<closeTime.length; i++){
+      var row = Ti.UI.createPickerRow({ 
+          title: closeTime[i],
+          font:formFont 
+      });
+      column2.addRow(row);
+    }
+    
+    pageField1a.add([column1,column2]);
+
+    
     fieldDivider1 = Titanium.UI.createLabel({
         text:'-',
         left:'5dp',
+        right:'5dp',
         font:formFont,
     });
     pageField1b = Titanium.UI.createTextField({
@@ -142,37 +175,69 @@
         borderRadius:4,
         backgroundColor:'#fff'
     });
-    pageField1c = Titanium.UI.createTextField({
-        font:formFont,
-        width : '20%',
-        height : '40dp',
-        hintText : '9:00AM',
-        value:pageData.pageField1c || '',
-        borderColor:'#fff',
-        borderWidth:1,
-        left:'25dp',
-        textAlign:'center',
-        borderRadius:4,
-        backgroundColor:'#fff'
+    var value = new Date();
+    pageField1c = Ti.UI.createPicker({
+       width : '20%',
+       height : '120dp',
+          
     });
+    var _openTime = [ '1:00', '2:00', '3:00', '4:00' ,'5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00' ,'12:00'];
+    var _closeTime = [ 'AM', 'PM'];
+    
+    var _column1 = Ti.UI.createPickerColumn();
+    
+    for(var i=0; i<_openTime.length; i++){
+      var row = Ti.UI.createPickerRow({
+        title: _openTime[i],
+        font:formFont
+      });
+      _column1.addRow(row);
+    }
+    
+    var _column2 = Ti.UI.createPickerColumn();
+    
+    for(var i=0; i<_closeTime.length; i++){
+      var row = Ti.UI.createPickerRow({ 
+          title: _closeTime[i],
+          font:formFont 
+      });
+      _column2.addRow(row);
+    }
+    
+    pageField1c.add([_column1,_column2]);
     fieldDivider2 = Titanium.UI.createLabel({
          text:'-',
         left:'5dp',
+        right:'5dp',
         font:formFont,
     });
-    pageField1d = Titanium.UI.createTextField({
-        font:formFont,
-        width : '20%',
-        height : '40dp',
-        hintText : '5:00PM',
-        value:pageData.pageField1d || '',
-        borderColor:'#fff',
-        borderWidth:1,
-        left:'5dp',
-        textAlign:'center',
-        borderRadius:4,
-        backgroundColor:'#fff'
+    pageField1d = Ti.UI.createPicker({
+       width : '20%',
+       height : '120dp',
+          
     });
+    
+    var $column1 = Ti.UI.createPickerColumn();
+    
+    for(var i=0; i<_openTime.length; i++){
+      var row = Ti.UI.createPickerRow({
+        title: _openTime[i],
+        font:formFont
+      });
+      $column1.addRow(row);
+    }
+    
+    var $column2 = Ti.UI.createPickerColumn();
+    
+    for(var i=0; i<_closeTime.length; i++){
+      var row = Ti.UI.createPickerRow({ 
+          title: _closeTime[i],
+          font:formFont 
+      });
+      $column2.addRow(row);
+    }
+    
+    pageField1d.add([$column1,$column2]);
     pageField1e = Titanium.UI.createTextField({
         font:formFont,
         width : '20%',
@@ -244,7 +309,7 @@
     });
     hoursView.add(pageField1a);
     hoursView.add(fieldDivider1);
-    hoursView.add(pageField1b);
+    //hoursView.add(pageField1b);
     hoursView.add(pageField1c);
     hoursView.add(fieldDivider2);
     hoursView.add(pageField1d);
@@ -358,6 +423,8 @@
     
     buttonBar.add(saveButton);
     buttonBar.add(cancelButton);
+    
+    
     
     saveButton.addEventListener('click', function()
     {
