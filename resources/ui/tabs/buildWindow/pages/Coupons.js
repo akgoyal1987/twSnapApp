@@ -137,7 +137,12 @@
                 left:'5dp',
                 top:'5dp'
             });
-            
+            rowImage.addEventListener('click', function(e) {
+				Ti.App.fireEvent('app:fromTitanium', { callback: function(imageurl){
+						rowImage.image = imageurl;
+					} 
+				});
+			});
             var rowTitle = Titanium.UI.createTextField({
                 font:formFontSm,
                 width : '60%',

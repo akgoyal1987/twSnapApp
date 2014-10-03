@@ -16,11 +16,7 @@
         height:'60dp',
         width:'100%',
         backgroundColor:'#333'
-    });
-    var webview = Ti.UI.createWebView({
-		url: 'html/filechooser.html'
-	});
-	pageHeader.add(webview);
+    });    
     pageHeaderTitle = Titanium.UI.createLabel({
         text:'Edit Page: ' + data.pageType,
         font: customFont
@@ -354,10 +350,10 @@
             pageTitle:pageTitle.value,
             pageType:data.pageType,
             pagePosition:data.pagePosition,
-            pageField:pageField.value,
-            pageField1:pageField1.value,
-            pageField2:pageField2.value,
-            pageIndex:data.pageIndex
+            //pageField:pageField.value,
+            //pageField1:pageField1.value,
+            //pageField2:pageField2.value,
+            //pageIndex:data.pageIndex
         };
         var appData = Ti.App.Properties.getObject('pageIndex',[]);
         appData[pageData.pageIndex] = pageData;
