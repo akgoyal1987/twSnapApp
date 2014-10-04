@@ -11,7 +11,7 @@
     var tableHeaderFont = {fontFamily: 'CoconOT-LightCond',fontSize:'22dp',color:'#fff'};
     var tableRowFont = {fontFamily: 'CoconOT-LightCond',fontSize:'20dp',color:'#000'};
     
-    data1 = [];  
+    data1 = [];
     pageHeader = Titanium.UI.createView({
         height:'60dp',
         width:'100%',
@@ -127,6 +127,11 @@
     });
     
     function addRow(rowToAdd){
+    	var rowData = {
+    		categoryimage : "images/build/placeholder.png",
+    		categorytitle : "", 
+    		items : []
+    	};
         var newRow = Titanium.UI.createTableViewRow({
                 height:'130dp',
                 backgroundColor:'#fcde95',
