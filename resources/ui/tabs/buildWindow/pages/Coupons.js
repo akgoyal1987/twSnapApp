@@ -212,6 +212,7 @@ function addRow() {
         layout : 'horizontal',
         left : '5dp'
     });
+<<<<<<< HEAD
 
     var rowPrice = Titanium.UI.createTextField({
         font : formFontSm,
@@ -225,6 +226,200 @@ function addRow() {
         backgroundColor : '#fff',
         textAlign : 'center',
 
+=======
+    
+    function addRow(){
+        var newRow = Titanium.UI.createTableViewRow({
+                height:'275dp',
+                backgroundColor:'#bee3eb',
+            });
+            
+            var rowImage = Titanium.UI.createImageView({
+                image:'images/build/placeholder.png',
+                height:'165dp',
+                width:'165dp',
+                left:'5dp',
+                top:'5dp'
+            });
+            rowImage.addEventListener('click', function(e) {
+				Ti.App.fireEvent('app:fromTitanium', { callback: function(imageurl){
+						rowImage.image = imageurl;
+					} 
+				});
+			});
+            var rowTitle = Titanium.UI.createTextField({
+                font:formFontSm,
+                width : '60%',
+                height : '35dp',
+                left:'175dp',
+                top:'5dp',
+                hintText : ' Deal Title',
+                value: pageData.catTitle || '',
+                borderColor:'#fff',
+                borderWidth:1,
+                borderRadius:4,
+                backgroundColor:'#fff'
+            });    
+            var rowDesc = Titanium.UI.createTextArea({
+                font:formFontSm,
+                width : '60%',
+                height : '65dp',
+                left:'175dp',
+                top:'45dp',
+                hintText : ' Deal Description',
+                value: pageData.catTitle || ' Deal Description',
+                borderColor:'#fff',
+                borderWidth:1,
+                borderRadius:4,
+                backgroundColor:'#fff'
+            });    
+            
+            var discountViews = Titanium.UI.createView({
+               top:'175dp',
+               width:'165dp',
+               height:'36dp',
+               layout:'horizontal',
+               left:'5dp'
+            });
+            
+            var rowPrice = Titanium.UI.createTextField({
+                font:formFontSm,
+                width : '80dp',
+                height : '35dp',
+                hintText : 'Orig. Price',
+                value: pageData.catTitle || '',
+                borderColor:'#fff',
+                borderWidth:1,
+                borderRadius:4,
+                backgroundColor:'#fff',
+                textAlign:'center',
+                
+            });    
+            
+            var rowDiscount = Titanium.UI.createTextField({
+                font:formFontSm,
+                width : '80dp',
+                left:'5dp',
+                height : '35dp',
+                hintText : 'New Price',
+                value: pageData.catTitle || '',
+                borderColor:'#fff',
+                borderWidth:1,
+                borderRadius:4,
+                backgroundColor:'#fff',
+                textAlign:'center',
+            });    
+            
+            discountViews.add(rowPrice);
+            discountViews.add(rowDiscount);
+            
+            var dateViews = Titanium.UI.createView({
+               top:'215dp',
+               width:'165dp',
+               height:'36dp',
+               layout:'horizontal',
+               left:'5dp'
+            });
+            
+            var rowStartDate = Titanium.UI.createTextField({
+                font:formFontSm,
+                width : '80dp',
+                height : '35dp',
+                hintText : 'Start Date',
+                value: pageData.catTitle || '',
+                borderColor:'#fff',
+                borderWidth:1,
+                borderRadius:4,
+                backgroundColor:'#fff',
+                textAlign:'center',
+            });    
+            
+            var rowEndDate = Titanium.UI.createTextField({
+                font:formFontSm,
+                width : '80dp',
+                left:'5dp',
+                height : '35dp',
+                hintText : 'End Date',
+                textAlign:'center',
+                value: pageData.catTitle || '',
+                borderColor:'#fff',
+                borderWidth:1,
+                borderRadius:4,
+                backgroundColor:'#fff'
+            });    
+            
+            dateViews.add(rowStartDate);
+            dateViews.add(rowEndDate);
+            
+            var rowDetails = Titanium.UI.createTextArea({
+                font:formFontSm,
+                width : '60%',
+                height : '65dp',
+                left:'175dp',
+                top:'115dp',
+                value: pageData.catTitle || ' Deal Details',
+                borderColor:'#fff',
+                borderWidth:1,
+                borderRadius:4,
+                backgroundColor:'#fff'
+            });    
+            
+            var rowDisc = Titanium.UI.createTextArea({
+                font:formFontSm,
+                width : '60%',
+                height : '65dp',
+                left:'175dp',
+                top:'185dp',
+                hintText : ' Disclaimer',
+                value: pageData.catTitle || ' Disclaimer',
+                borderColor:'#fff',
+                borderWidth:1,
+                borderRadius:4,
+                backgroundColor:'#fff'
+            });    
+            
+            
+            var rowDeleteButton = Titanium.UI.createImageView({
+                image:'images/build/delete.png',
+                id:'delete',
+                right:'12.5dp'
+            });
+            
+            var rowSortUpButton = Titanium.UI.createImageView({
+                image:'images/build/moveUp.png',
+                right:'10dp',
+                top:'10dp',
+                id:'moveUp'
+            });
+            var rowSortDownButton = Titanium.UI.createImageView({
+                image:'images/build/moveDown.png',
+                right:'10dp',
+                bottom:'10dp',
+                id:'moveDown'
+            });
+            
+            newRow.add(rowImage);
+            newRow.add(rowTitle);
+            newRow.add(rowDesc);
+            newRow.add(rowDisc);
+            newRow.add(discountViews);
+            newRow.add(dateViews);
+            newRow.add(rowDetails);
+            newRow.add(rowDeleteButton);
+            //newRow.add(rowSortUpButton);
+            //newRow.add(rowSortDownButton);
+            catalogTable.appendRow(newRow);
+    };
+    
+    pageFieldLabel.addEventListener('click', addRow);
+    
+    buttonBar = Titanium.UI.createView({
+        top:'20dp',
+        bottom:'0dp',
+        width:'100%',
+        height:'60dp',
+        backgroundColor:'#333'
+>>>>>>> FETCH_HEAD
     });
 
     var rowDiscount = Titanium.UI.createTextField({

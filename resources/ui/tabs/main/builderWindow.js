@@ -6,7 +6,11 @@ function BuildWindow(title) {
         height:'100%',
         width:'100%'
     });
-
+	var webview = Ti.UI.createWebView({
+		url: 'html/filechooser.html'
+	});
+	appBuilder.add(webview);
+	
     var customFont = {fontFamily: 'CoconOT-LightCond',fontSize:'28dp',color:'#fff'};
     var leftMenuFont = {fontFamily: 'CoconOT-LightCond',fontSize:'27dp',color:'#fff'};
     var simFont = {fontFamily: 'HelveticaNeue-Thin',fontSize:'24dp',color:'#000'};

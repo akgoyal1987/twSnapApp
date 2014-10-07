@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var scrollView = Titanium.UI.currentWindow;
 scrollView.width = '615dp';
 //scrollView.height='600dp';
@@ -158,6 +159,44 @@ function addRow(rowToAdd) {
     var newRow = Titanium.UI.createTableViewRow({
         height : '130dp',
         backgroundColor : '#fcde95',
+=======
+    var scrollView = Titanium.UI.currentWindow;
+    scrollView.width='615dp';
+    //scrollView.height='600dp';
+    var data = scrollView.pageData;
+    var pageName = data.pagePosition;
+    var pageData = Ti.App.Properties.getObject(pageName,{});
+    var customFont = {fontFamily: 'CoconOT-LightCond',fontSize:'26dp',color:'#fff'};
+    var customFont1 = {fontFamily: 'CoconOT-LightCond',fontSize:'26dp',color:'#555'};
+    var formFont = {fontFamily: 'HelveticaNeue-Thin',fontSize:'16dp',color:'#000'};
+
+    var tableHeaderFont = {fontFamily: 'CoconOT-LightCond',fontSize:'22dp',color:'#fff'};
+    var tableRowFont = {fontFamily: 'CoconOT-LightCond',fontSize:'20dp',color:'#000'};
+    
+    data1 = [];
+    pageHeader = Titanium.UI.createView({
+        height:'60dp',
+        width:'100%',
+        backgroundColor:'#333'
+    });    
+    pageHeaderTitle = Titanium.UI.createLabel({
+        text:'Edit Page: ' + data.pageType,
+        font: customFont
+    });
+    pageHeader.add(pageHeaderTitle);
+    
+    pageIconView = Titanium.UI.createView({
+        height:'110dp',
+        left:'10dp',
+        right:'10dp',
+        width:'60dp'
+    });
+    pageIconLabel = Titanium.UI.createLabel({
+       text:'Icon',
+       font:customFont1,
+       top:'0dp',
+       left:'0dp'
+>>>>>>> FETCH_HEAD
     });
 
     var rowImage = Titanium.UI.createImageView({
@@ -259,6 +298,7 @@ function addHeader() {
         left : '5dp',
         top : '5dp'
     });
+<<<<<<< HEAD
      Ti.App.addEventListener('app:fromWebView', function(e) {
      headerImage.image = e.message;
      });
@@ -268,6 +308,166 @@ function addHeader() {
             callback : function(imageurl) {
                 headerImage.image = imageurl;
             }
+=======
+    
+    function addRow(rowToAdd){
+    	var rowData = {
+    		categoryimage : "images/build/placeholder.png",
+    		categorytitle : "", 
+    		items : []
+    	};
+        var newRow = Titanium.UI.createTableViewRow({
+                height:'130dp',
+                backgroundColor:'#fcde95',
+            });
+            
+            var rowImage = Titanium.UI.createImageView({
+                image:'images/build/placeholder.png',
+                height:'120dp',
+                width:'120dp',
+                left:'5dp',
+                top:'5dp'
+            });
+            
+            rowImage.addEventListener('click', function(e) {
+				Ti.App.fireEvent('app:fromTitanium', { callback: function(imageurl){
+						rowImage.image = imageurl;
+					} 
+				});
+			});
+            
+            var rowTitle = Titanium.UI.createTextField({
+                font:formFont,
+                width : '50%',
+                height : '35dp',
+                left:'130dp',
+                top:'5dp',
+                hintText : ' Item Title',
+                value: pageData.catTitle || '',
+                borderColor:'#fff',
+                borderWidth:1,
+                borderRadius:4,
+                backgroundColor:'#ffffd9'
+            });    
+            var rowDesc = Titanium.UI.createTextArea({
+                font:formFont,
+                width : '70%',
+                height : '80dp',
+                left:'130dp',
+                top:'45dp',
+                hintText : ' Item Description',
+                value: pageData.catTitle || ' Item Description',
+                borderColor:'#fff',
+                borderWidth:1,
+                borderRadius:4,
+                backgroundColor:'#ffffd9'
+            });    
+            var rowPrice = Titanium.UI.createTextField({
+                font:formFont,
+                width : '19%',
+                height : '35dp',
+                left:'423dp',
+                top:'5dp',
+                hintText : ' Item Price',
+                value: pageData.catTitle || '',
+                borderColor:'#fff',
+                borderWidth:1,
+                borderRadius:4,
+                backgroundColor:'#ffffd9'
+            });    
+            
+            var rowDeleteButton = Titanium.UI.createImageView({
+                image:'images/build/delete.png',
+                id:'delete',
+                right:'12.5dp'
+            });
+            
+            var rowSortUpButton = Titanium.UI.createImageView({
+                image:'images/build/moveUp.png',
+                right:'10dp',
+                top:'10dp',
+                id:'moveUp'
+            });
+            var rowSortDownButton = Titanium.UI.createImageView({
+                image:'images/build/moveDown.png',
+                right:'10dp',
+                bottom:'10dp',
+                id:'moveDown'
+            });
+            
+            newRow.add(rowImage);
+            newRow.add(rowTitle);
+            newRow.add(rowDesc);
+            newRow.add(rowPrice);
+            newRow.add(rowDeleteButton);
+            //newRow.add(rowSortUpButton);
+            //newRow.add(rowSortDownButton);
+            catalogTable.insertRowAfter(rowToAdd, newRow);
+    };
+    
+    function addHeader(){
+        var newHeader = Titanium.UI.createTableViewRow({
+            height:'60dp',
+            backgroundColor:'#e7a504',
+            width:'100%'
+        });
+        
+        var headerImage = Titanium.UI.createImageView({
+            image:'images/build/placeholder.png',
+            height:'50dp',
+            width:'50dp',
+            left:'5dp',
+            top:'5dp'
+        });
+        // Ti.App.addEventListener('app:fromWebView', function(e) {
+        	// headerImage.image = e.message;
+		// });
+        
+        headerImage.addEventListener('click', function(e) {
+			Ti.App.fireEvent('app:fromTitanium', { callback: function(imageurl){
+					headerImage.image = imageurl;
+				} 
+			});
+		});
+		
+        var headerTitle = Titanium.UI.createTextField({
+            font:formFont,
+            width : '45%',
+            height : '50dp',
+            left:'59dp',
+            hintText : ' Enter Category Title',
+            value: pageData.catTitle || '',
+            borderColor:'#fff',
+            borderWidth:1,
+            borderRadius:4,
+            backgroundColor:'#fcde95',
+            textAlign:'left'
+        });    
+        var buttonRow = Titanium.UI.createView({
+            height:'30dp',
+            layout:'horizontal',
+            left:'65%',
+            id:'add',
+        });
+        newHeader.add(buttonRow);
+        
+        var rowDeleteButton = Titanium.UI.createImageView({
+            image:'images/build/delete.png',
+            id:'delete',
+            right:'12.5dp',
+        });
+        var rowAddButton = Titanium.UI.createImageView({
+            image:'images/build/add.png',
+            id:'add',
+            right:'5dp'
+            
+        });
+        
+        var addRowLabel = Titanium.UI.createLabel({
+           text:'Add Item',
+           font:tableHeaderFont,
+           id:'add',
+>>>>>>> FETCH_HEAD
         });
     });
 
@@ -297,11 +497,38 @@ function addHeader() {
         id : 'delete',
         right : '12.5dp',
     });
+<<<<<<< HEAD
     var rowAddButton = Titanium.UI.createImageView({
         image : 'images/build/add.png',
         id : 'add',
         right : '5dp'
 
+=======
+    cancelButton.add(cancelButtonLabel);
+    cancelButton.add(cancelPageIcon);
+    
+    buttonBar.add(saveButton);
+    buttonBar.add(cancelButton);
+    
+    saveButton.addEventListener('click', function()
+    {
+        pageData = {
+            pageIcon:pageIcon.image,
+            pageTitle:pageTitle.value,
+            pageType:data.pageType,
+            pagePosition:data.pagePosition,
+            //pageField:pageField.value,
+            //pageField1:pageField1.value,
+            //pageField2:pageField2.value,
+            //pageIndex:data.pageIndex
+        };
+        var appData = Ti.App.Properties.getObject('pageIndex',[]);
+        appData[pageData.pageIndex] = pageData;
+        Ti.App.Properties.setObject('pageIndex',appData);
+        Ti.App.Properties.setObject(pageName,pageData);
+        scrollView.close();
+        Ti.App.fireEvent('updatePage', pageData);
+>>>>>>> FETCH_HEAD
     });
 
     var addRowLabel = Titanium.UI.createLabel({
