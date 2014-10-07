@@ -5,6 +5,7 @@
     var customFont = {fontFamily: 'CoconOT-LightCond',fontSize:'26dp',color:'#fff'};
     var customFont1 = {fontFamily: 'CoconOT-LightCond',fontSize:'26dp',color:'#555'};
     var formFont = {fontFamily: 'HelveticaNeue-Thin',fontSize:'16dp',color:'#000'};
+    var isSet;
     
     pageHeader = Titanium.UI.createView({
         height:'60dp',
@@ -106,12 +107,12 @@
     });
     yelpButton = Titanium.UI.createButton({
            width: '125dp',
-           backgroundColor:'#97ca52',
+           backgroundColor:pageData.reviewer=='yelp' ? '#97ca52':'#333',
            height:'40dp',
            borderColor:'#97ca52',
            borderWidth:3,
            borderRadius:8,
-           bottom:0
+           bottom:0,
     });
         
     yelpTitle = Titanium.UI.createLabel({
@@ -139,7 +140,7 @@
     });
     fbButton = Titanium.UI.createButton({
            width: '125dp',
-           backgroundColor:'#333',
+           backgroundColor:pageData.reviewer=='city' ? '#1fabe2':'#333',
            height:'40dp',
            borderColor:'#1fabe2',
            borderWidth:3,
@@ -153,19 +154,17 @@
     galleryType.add(yelpView);
     galleryType.add(fbView);
 
-    
-    
-    
     yelpButton.addEventListener('click', function(){
         yelpButton.backgroundColor = '#97ca52';
         fbButton.backgroundColor = '#333';
+        isSet = 'yelp';
     });
     
     fbButton.addEventListener('click', function(){
         yelpButton.backgroundColor = '#333';
         fbButton.backgroundColor = '#1fabe2';
+        isSet = 'city';
     });
-    
     
     pageFieldLabel = Titanium.UI.createLabel({
        text:data.pageType + ' URL',
@@ -241,7 +240,8 @@
             pageType:data.pageType,
             pagePosition:data.pagePosition,
             pageField:pageField.value,
-            pageIndex:data.pageIndex
+            pageIndex:data.pageIndex,
+            reviewer:isSet
         };
         var appData = Ti.App.Properties.getObject('pageIndex',[]);
         appData[pageData.pageIndex] = pageData;

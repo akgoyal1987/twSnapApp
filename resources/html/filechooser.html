@@ -1,6 +1,6 @@
 <html>
 	<head>
-	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="jquery-1.11.1.min.js"></script>
 	<script>
 		$(document).ready(function(){
 			var Ti = window.parent.Ti;
@@ -12,20 +12,26 @@
 			$('.imagefile').change(function(e){
 				var formData = new FormData();
 				var files = e.target.files;
+				console.log(formData);
 				$.each(files, function(key, value){
-					formData.append(key, value);	
+					formData.append("uploadimage", value);	
 				});
 				formData.append("appid", "2");
 				formData.append("imagename", "categoryIcon1");
+				//var url = "http://localhost:4000";
+				var	url = "http://104.131.69.224:4000";
+				
 				 $.ajax({
-					url: "http://localhost:3000/uploadimage",
+					url : url+"/uploadfile",
 					type: 'POST',
-					data:  "appid=1",
-					mimeType:"multipart/form-data",
+					data:  formData,
+					processData: false,
+    				contentType: false,
 					success: function(response, textStatus, jqXHR){
-						var data = JSON.parse(response);
-						callback(data.uploadimage); 
-						//Ti.App.fireEvent('app:fromWebView', { message: data.uploadimage });	
+						setTimeout(function(){
+							callback(url+response.image.filepath);
+						},  5000);
+						//Ti.App.fireEvent('app:fromWebView', { message: "http://localhost:4000/"+response.image.filepath });	
 					},
 					error: function(jqXHR, textStatus, errorThrown){
 						

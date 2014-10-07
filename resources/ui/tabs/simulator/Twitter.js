@@ -30,40 +30,19 @@
         backgroundColor:'#fff'
     });
     
-    var Codebird = require("/libs/codebird");
-    var cb = new Codebird();
-    cb.setConsumerKey('FrsxffyVFv0ciPy0h0oI9oUwd', 'lOay5qyuEcpdyJJ9Eir32IkTixohPoAjniOzigKKGmvXuA9whV');
+    imageView = Titanium.UI.createImageView({
+    	image:'images/dashboard/'+pageData.pageType+'.png',
+    	top:'15%'
+    });
+    notSupportedLabel = Titanium.UI.createLabel({
+    	text:pageData.pageType + '\n\nThis view is not supported in the simulator',
+    	font:formFont,
+    	width:'90%',
+    	textAlign:'center'
+    });
     
-    var bearerToken = Ti.App.Properties.getString('TwitterBearerToken', null);
-    if(bearerToken == null){
-        cb.__call(
-            'oauth2_token',
-            {},
-            function (reply) {
-                var bearer_token = reply.access_token;
-                //cb.setBearerToken(bearer_token);
-                //Ti.App.Properties.setString('TwitterBearerToken', bearer_token);
-                //fetchTwitter();
-            }
-        );
-    } else {
-        Ti.API.info("We do have a bearer token...");
-        //cb.setBearerToken(bearerToken);
-        //fetchTwitter();
-    }
-    
-    
-    function fetchTwitter(){
-        cb.__call(
-            'search_tweets',
-            "q="+Ti.Network.encodeURIComponent("#awesome"),
-            function (reply) {
-                // ...
-                Ti.API.info(reply);
-            },
-            true // this parameter required
-        );
-    }
+    scrollView.add(imageView);
+    scrollView.add(notSupportedLabel);
 
     
     saveButton = Ti.UI.createImageView({

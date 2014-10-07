@@ -29,6 +29,20 @@
         height:'100%',
         backgroundColor:'#fff'
     });
+    
+    imageView = Titanium.UI.createImageView({
+    	image:'images/dashboard/'+pageData.pageType+'.png',
+    	top:'15%'
+    });
+    notSupportedLabel = Titanium.UI.createLabel({
+    	text:pageData.pageType + '\n\nThis view is not supported in the simulator',
+    	font:formFont,
+    	width:'90%',
+    	textAlign:'center'
+    });
+    
+    scrollView.add(imageView);
+    scrollView.add(notSupportedLabel);
 
     
     saveButton = Ti.UI.createImageView({

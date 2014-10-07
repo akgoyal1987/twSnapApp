@@ -1,5 +1,4 @@
     var winBorder = Titanium.UI.currentWindow;
-    winBorder.height = '710dp';
     
     var win = Ti.UI.createView({
         width:'565dp',
@@ -97,7 +96,7 @@
     {
         if (e.source.image){
             //alert(e.source.image);
-            Ti.App.fireEvent('changeIcon', {image:e.source.image});
+            Ti.App.fireEvent('stampIcon', {image:e.source.image});
         }
         winBorder.close();
     });

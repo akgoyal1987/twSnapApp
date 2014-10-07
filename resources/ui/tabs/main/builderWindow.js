@@ -23,12 +23,13 @@ function BuildWindow(title) {
     var myPagesData = [];
     var simulatorType = 'list';
     
-    getAppData(2);
+    //var appToLoad = Ti.App.Properties.getInt('appToLoad');
+   //getAppData(appToLoad);
     
     function getAppData(params){
         //var url = "http://104.131.33.138:3000/api/appdata?filter={%22where%22:{%22id%22:"+ params + "}}";
         //var url = "http://127.0.0.1:3000/api/appdata/";
-        var url = "http://104.131.33.138:3000/api/appdata/1";
+        var url = "http://104.131.33.138:3000/api/appdata/" + params;
         var client = Ti.Network.createHTTPClient({
              onload : function(e) {
                  var obj = JSON.parse(this.responseText);
@@ -40,9 +41,13 @@ function BuildWindow(title) {
                  	"id":obj.id      	
 				 });
                  Ti.App.Properties.setObject('pageIndex',obj.about);
-                 ///////////////////////////////////////////////
-                 // Redirect here to Thank you / Welcome Page //
-                 ///////////////////////////////////////////////
+                 pageCount = obj.about;
+                 Ti.API.info('pagecount: ' + pageCount);
+                 
+                 for (var i=0; i < pageCount.length; i++) {
+                   Ti.App.Properties.setObject(pageCount[i].pagePosition,pageCount[i]);
+                 };
+
                  reloadMyPages();
         		 loadSimulator();
              },
@@ -110,7 +115,7 @@ function BuildWindow(title) {
          //   top:'0dp',
             width: '685dp',
             height:'100%',
-            
+            left:'0dp'
         });
         dividerChild = Ti.UI.createScrollView({
          //   top:'0dp',
@@ -124,7 +129,8 @@ function BuildWindow(title) {
             layout:'horizontal'
         });
         appBuilder.self.add(appBuilder.leftChild);
-        appBuilder.self.add(dividerChild);
+        if(Ti.Platform.osname=='mobileweb'){
+        appBuilder.self.add(dividerChild);}
         appBuilder.self.add(appBuilder.rightChild);
     }
 
@@ -1800,16 +1806,15 @@ function BuildWindow(title) {
     appBuilder.simulator.addEventListener('click', function (e){
        Ti.API.info(e.source.pageType);
        var newPage = Ti.UI.createWindow({
-            url:'ui/tabs/simulator/' +  e.source.pageType + '.js',
+            url:'/ui/tabs/simulator/' +  e.source.pageType + '.js',
             backgroundColor:'transparent',
             height:'100%',
             width:'100%',
-            fullscreen:false,
             pageData:e.source.pagePosition,
             _sim:appBuilder.simulator,
-            modal:true,
         });
         appBuilder.simulator.add(newPage);
+        //newPage.open();
     });
 
     appBuilder.navigationView.addEventListener('dragend', function (e){

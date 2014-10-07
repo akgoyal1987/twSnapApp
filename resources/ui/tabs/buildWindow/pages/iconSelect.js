@@ -1,5 +1,4 @@
     var winBorder = Titanium.UI.currentWindow;
-    winBorder.height = '710dp';
     
     var win = Ti.UI.createView({
         width:'565dp',

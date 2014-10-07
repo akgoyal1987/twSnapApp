@@ -23,7 +23,8 @@
     
     header.add(pageTitle);
 
-    scrollView = Titanium.UI.createView({
+    scrollView = Titanium.UI.createWebView({
+    	url:'http://www.youtube.com/embed/' + pageData.pageField,
         width : '100%',
         top : '60dp',
         height:'100%',

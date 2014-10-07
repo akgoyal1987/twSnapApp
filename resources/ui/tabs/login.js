@@ -10,8 +10,6 @@ function LoginWindow(title) {
        width:'100%',
        title : 'MyFreeApp',
        backgroundImage:'images/snappapp.jpg',
-       //layout:'vertical',
-       //backgroundColor:'#fff'
     });
     
     var snappappLogo = Titanium.UI.createImageView({
@@ -162,11 +160,7 @@ function LoginWindow(title) {
     
     loginView.Login.addEventListener('click', function(e){
         LoadAppbuilder();
-        regParams = {
-            'data[AppUser][email]': loginView.Username.value,
-            'data[AppUser][password]':loginView.Pass.value,
-        };
-        //Login(regParams);
+        //Login(loginView.Username.value,loginView.Pass.value);
     });
     
     loginView.Username.addEventListener('change', function(e) {
@@ -369,27 +363,38 @@ function LoginWindow(title) {
         return errors.replace(/\n/, '');
     }
     
-    function Login(params){
-        var url = "http://api.myfreeapp.com/app_users/login.json";
+    function Login(_email,_pass){
+    	//var encoded = Ti.Network.encodeURIComponent('encode this & that');
+    	var email = Ti.Network.encodeURIComponent(_email);
+    	var pass = Ti.Network.encodeURIComponent(_pass);
+    	
+        var url = "http://104.131.33.138:3000/api/appdata?filter=%7B%20%22where%22%20%3A%20%7B%20%22email%22%20%3A%20%22" + email +"%22%2C%20%22fbfeed%22%3A%22" + pass + "%22%20%7D%20%7D";
         var client = Ti.Network.createHTTPClient({
              onload : function(e) {
-
-                 accountData = JSON.parse(this.responseText);
-                 Ti.API.info(accountData);
-                 LoadAppbuilder();
+				if(_email=='cat1@example.com'){
+					Ti.App.Properties.setInt('appToLoad', 7);
+					LoadAppbuilder();
+				}else if(_email=='cat2@example.com'){
+					Ti.App.Properties.setInt('appToLoad', 8);
+					LoadAppbuilder();
+				}else if(_email=='cat3@example.com'){
+					Ti.App.Properties.setInt('appToLoad', 9);
+					LoadAppbuilder();
+				}
              },
              onerror : function(e) {
                  Ti.API.debug(e.error);
              },
              timeout : 5000  // in milliseconds
         });
-        client.open("POST", url);
-        client.send(params);
-        //LoadAppbuilder();
+        client.open("GET", url);
+        client.setRequestHeader("Content-Type", "application/json");
+        client.setRequestHeader('charset','utf-8');
+        client.send();
     }
     
     function Register(params){
-        var url = "http://api.myfreeapp.com/app_users/register.json";
+        var url = "http://104.131.33.138:3000/api/appdata";
         var client = Ti.Network.createHTTPClient({
              onload : function(e) {
                  Ti.API.info("Received text: " + this.responseText);

@@ -1,7 +1,7 @@
 var win = Titanium.UI.currentWindow;
 var pageName = win.pageData;
 var pageData = Ti.App.Properties.getObject(pageName);
-var location;
+
 var customFont = {
     fontFamily : 'CoconOT-LightCond',
     fontSize : '26dp',
@@ -17,6 +17,7 @@ var formFont = {
     fontSize : '20dp',
     color : '#000'
 };
+
 
 var header = Titanium.UI.createView({
     width : '100%',
@@ -34,38 +35,39 @@ var pageTitle = Titanium.UI.createLabel({
 
 header.add(pageTitle);
 
-scrollView = Titanium.Map.createView({
-    region : {
-
-        latitudeDelta : 8,
-        longitudeDelta : 8
-    },
+scrollView = Titanium.UI.createView({
     width : '100%',
     top : '60dp',
     height : '100%',
+    backgroundColor : '#fff'
 });
 
-var myAddress = pageData.pageField;
-
-Ti.Geolocation.forwardGeocoder(myAddress, function(evt) {
-
-    var objLocationAnnotation = Titanium.Map.createAnnotation({
-        latitude : evt.latitude,
-        longitude : evt.longitude,
-        pincolor : Titanium.Map.ANNOTATION_RED,
-        title : pageData.pageField
-    });
-    scrollView.addAnnotation(objLocationAnnotation);
-
+imageView = Titanium.UI.createImageView({
+    image : 'images/dashboard/' + pageData.pageType + '.png',
+    top : '15%'
+});
+notSupportedLabel = Titanium.UI.createLabel({
+    text : pageData.pageType + '\n\nThis view is not supported in the simulator',
+    font : formFont,
+    width : '90%',
+    textAlign : 'center'
 });
 
-
+scrollView.add(imageView);
+scrollView.add(notSupportedLabel);
 
 saveButton = Ti.UI.createImageView({
     image : '/images/simulator/backButton.png',
     left : '5dp',
     top : '15dp',
 });
+
+saveButton.addEventListener('click', function() {
+    win._sim.remove(win);
+});
+
+win.add(scrollView);
+win.add(saveButton);
 
 saveButton.addEventListener('click', function() {
     win._sim.remove(win);

@@ -30,16 +30,16 @@
        left:'0dp'
     });
     pageIcon = Titanium.UI.createImageView({
-        top:'35dp',
+    	top:'35dp',
         width : '60dp',
         height : '60dp',
         image: pageData.pageIcon,
         left:'0dp'
     });
     pageIconEdit = Titanium.UI.createImageView({
-        image:'images/build/editIcon.png',
-        top:'75dp',
-        right:'0dp'
+    	image:'images/build/editIcon.png',
+    	top:'75dp',
+    	right:'0dp'
     });
     pageIconView.add(pageIconLabel);
     pageIconView.add(pageIcon);

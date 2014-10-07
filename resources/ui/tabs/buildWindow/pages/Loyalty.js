@@ -96,7 +96,7 @@
     });
     stampRight = Titanium.UI.createView({
         width:'26%',
-        height:'80dp',
+        height:'90dp',
         layout:'vertical',
         left:'4%'
     });
@@ -114,7 +114,8 @@
         font:formFont,
         width : '100%',
         height : '40dp',
-        value: pageData.pageField || '',
+        value: pageData.stampOptions || '8',
+        hintText:'...',
         borderColor:'#fff',
         borderWidth:1,
         borderRadius:4,
@@ -133,11 +134,13 @@
     });
     
     stampIcon = Titanium.UI.createImageView({
-        image:'images/build/placeholder.png',
+        image:pageData.stampIcon || 'images/build/placeholder.png',
         height:'50dp',
         width:'50dp',
         left:'0dp'
     });
+    
+    stampIcon.addEventListener('click', showStamps);
     
     stampRight.add(stampIconLabel);
     stampRight.add(stampIcon);
@@ -174,7 +177,7 @@
         font:formFont,
         width : '100%',
         height : '40dp',
-        value: pageData.pageField || '',
+        value: pageData.freebieOptions || 'Buy 8 get 9th Free',
         borderColor:'#fff',
         borderWidth:1,
         borderRadius:4,
@@ -193,11 +196,14 @@
     });
     
     freebieIcon = Titanium.UI.createImageView({
-        image:'images/build/placeholder.png',
+        image:pageData.freebieIcon || 'images/build/placeholder.png',
         height:'50dp',
         width:'50dp',
-        left:'0dp'
+        left:'0dp',
+        
     });
+    
+    freebieIcon.addEventListener('click', showFreebie);
     
     freebieRight.add(freebieIconLabel);
     freebieRight.add(freebieIcon);
@@ -219,7 +225,7 @@
         textAlign:'center',
         width : '60dp',
         height : '40dp',
-        value: pageData.pageField || '',
+        value: pageData.code || '1010',
         borderColor:'#fff',
         borderWidth:1,
         borderRadius:4,
@@ -246,7 +252,7 @@
         height:'80dp',
         width:'94%',
         font:formFont,
-        value: pageData.pageField || '',
+        value: pageData.pageField || 'Limit 1 per purchase',
         borderColor:'#fff',
         borderWidth:1,
         borderRadius:4,
@@ -312,8 +318,14 @@
             pageTitle:pageTitle.value,
             pageType:data.pageType,
             pagePosition:data.pagePosition,
-            pageField:pageField.value,
-            pageIndex:data.pageIndex
+            pageField:descArea.value,
+            pageIndex:data.pageIndex,
+            stampOptions:stampOptions.value,
+            stampIcon:stampIcon.image,
+            freebieOptions:freebieOptions.value,
+            freebieIcon:freebieIcon.image,
+            code:codeArea.value
+            
         };
         var appData = Ti.App.Properties.getObject('pageIndex',[]);
         appData[pageData.pageIndex] = pageData;
@@ -328,11 +340,41 @@
     Ti.App.addEventListener('changeIcon', function(data) {
         pageIcon.image = data.image;
     });
-    
+    Ti.App.addEventListener('stampIcon', function(data) {
+        stampIcon.image = data.image;
+    });
+    Ti.App.addEventListener('freebieIcon', function(data) {
+        freebieIcon.image = data.image;
+    });
     function showIcons(e){
         var allIcons = Ti.UI.createWindow({
                 url:'/ui/tabs/buildWindow/iconSelect.js',
-                height:'610dp',
+                height:'710dp',
+                width:'745dp',
+                backgroundColor:'transparent',
+                fullscreen:false,
+                pageData:data,
+                modal:true,
+            });
+        allIcons.open();
+    }
+    
+    function showStamps(e){
+        var allIcons = Ti.UI.createWindow({
+                url:'/ui/tabs/buildWindow/stampSelect.js',
+                height:'710dp',
+                width:'745dp',
+                backgroundColor:'transparent',
+                fullscreen:false,
+                pageData:data,
+                modal:true,
+            });
+        allIcons.open();
+    }
+    function showFreebie(e){
+        var allIcons = Ti.UI.createWindow({
+                url:'/ui/tabs/buildWindow/freebieSelect.js',
+                height:'710dp',
                 width:'745dp',
                 backgroundColor:'transparent',
                 fullscreen:false,

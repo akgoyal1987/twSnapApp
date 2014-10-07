@@ -50,8 +50,9 @@
     var yGrid = 4;
     var tableData = [];
     var cellIndex = 0;
-    var labels = ['About','Call','Catalog','Forms','Coupons','Shop','Email', 'Facebook', 'Gallery', 'Twitter', 'RSS', 'Reviews','Video','Webpage', 'Html', 'Loyalty', 'Locations', 'Instagram', 'Pinterest','Foursquare'];   
-    //var labels = ['About','Call','Email', 'Facebook', 'Gallery', 'Twitter', 'RSS', 'Reviews','Video','Webpage','Locations', 'Instagram', 'Pinterest','Foursquare'];
+    //var labels = ['Call','Email', 'Facebook', 'Gallery', 'Twitter', 'RSS', 'Review','Video','Webpage', 'Html', 'Loyalty', 'Locations', 'Instagram', 'Pinterest','Foursquare'];   
+    var labels = ['About','Call','Catalog','Forms','Coupons','Shop','Email', 'Facebook', 'Gallery', 'Twitter', 'RSS', 'Review','Video','Webpage', 'Html', 'Loyalty', 'Locations', 'Instagram', 'Pinterest','Foursquare'];   
+    
     for (var y=0; y<yGrid; y++){
         var thisRow = Ti.UI.createTableViewRow({
             className: "grid",
