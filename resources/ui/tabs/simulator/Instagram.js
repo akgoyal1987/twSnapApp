@@ -70,56 +70,83 @@
     win.add(displayTable);
     
     getUserList();
+    function createCORSRequest(method, url) {
+		var xhr = new XMLHttpRequest();
+		if ("withCredentials" in xhr) {
+			xhr.open(method, url);
+		} else if (typeof XDomainRequest != "undefined") {
+			xhr = new XDomainRequest();
+			xhr.open(method, url);
+		} else {
+			xhr = null;
+		}
+		return xhr;
+	}
     
     function getUserList(){
     	if(instagramUser == null || instagramUser == ''){
     		LoadingLabel.text = 'User name is empty.';
     		return;
     	}
-        var url = 'https://api.instagram.com/v1/users/search?q=' + instagramUser + '&client_id=b5dc5d1949a149968460e6fea118f6b6';
-        var client = Ti.Network.createHTTPClient({
-             onload : function(e) {
-                 var data = JSON.parse(this.responseText).data;
+        var url = 'http://content.como-services.com/api/photos/instagram/albums/' + instagramUser;
+        
+
+		var xhr = createCORSRequest('GET', url);
+		if (!xhr) {
+			LoadingLabel.text = 'User name is empty.';
+			return;
+		}
+		xhr.onload = function() {
+			if(JSON.parse(this.responseText).result == null){
+				LoadingLabel.text = 'Could not find that user.';
+				return;
+			}
+   			var data = JSON.parse(this.responseText).result.albums;
                  
-                 //check if user exist
-                 for( i = 0; i < data.length; i++ ) {
-                 	if( data[i]['username'] ==  instagramUser ) {
-                 		userID = data[i]['id'];
-                 		break;
-                 	}
-                 }
-                 
-                 getUserInfo();
-             },
-             onerror : function(e) {
-                 Ti.API.debug(e.error);
-                 LoadingLabel.text = 'Error occured';
-                 //alert('error');
-             },
-             timeout : 5000  // in milliseconds
-        });
+             //check if user exist
+            for( i = 0; i < data.length; i++ ) {
+             	if( data[i]['userName'] ==  instagramUser ) {
+             		userID = data[i]['id'];
+             		break;
+             	}
+            }
+            if(userID == 0){
+				LoadingLabel.text = 'Could not find that user.';
+				return;
+			}
+            getUserInfo();
+   		};
+   		xhr.onerror = function() {
+            LoadingLabel.text = 'Error occured';
+   		};
+   		//xhr.withCredentials = true;
+		xhr.send();
+        /*var client = Ti.Network.createHTTPClient();
         // Prepare the connection.
         client.open("GET", url);
+        client.setDomain('api.instagram.com');
+        client.setWithCredentials(true);
         // Send the request.
-        client.send();
+        client.send();*/
     }
     
     function getUserInfo(){
-        var url = 'https://api.instagram.com/v1/users/' + userID + '?client_id=b5dc5d1949a149968460e6fea118f6b6';
-        var client = Ti.Network.createHTTPClient({
-             onload : function(e) {
-                 var data = JSON.parse(this.responseText).data;
+        var url = 'http://content.como-services.com/api/photos/instagram/' + userID ;
+        var xhr = createCORSRequest('GET', url);
+		if (!xhr) {
+			LoadingLabel.text = 'User name is empty.';
+			return;
+		}
+		xhr.onload = function() {
+   			var data = JSON.parse(this.responseText).result;
                  
-                 getFeed(data);
-             },
-             onerror : function(e) {
-                 Ti.API.debug(e.error);
-                 LoadingLabel.text = 'Error occured';
-             },
-             timeout : 5000  // in milliseconds
-        });
-        client.open("GET", url);
-        client.send();
+            //getFeed(data);
+            createDisplayTable(data);
+   		};
+   		xhr.onerror = function() {
+            LoadingLabel.text = 'Error occured';
+   		};
+		xhr.send();
     }
     
     function getFeed(profile){
@@ -140,10 +167,12 @@
         client.send();
     }
     
-    function createDisplayTable(data, profile){
+    function createDisplayTable(data){
     	LoadingLabel.text = '';
     	
     	tabledata = [];
+    	
+    	var profile = data['owner'];
     	
         var headerOutRow = Titanium.UI.createTableViewRow({
             backgroundColor:'#fff',
@@ -168,7 +197,7 @@
             width:'70dp',
             borderWidth:2,
             borderColor:'#ccc',
-            image:profile['profile_picture'],
+            image:profile['profilePictureUrl'],
             backgroundColor:'#fff'
         });
         headerRow.add(profilePicture);
@@ -181,7 +210,7 @@
         });
         headerRow.add(profilePanel);
         
-        var profileName = profile['full_name'];
+        var profileName = profile['displayName'];
         if( profileName == '' )
         	profileName = profile['username'];
         var pageName = Ti.UI.createLabel({
@@ -211,7 +240,7 @@
         infoPanel.add(postPanel);
         
         var postCount = Ti.UI.createLabel({
-            text:profile['counts']['media'],
+            text:data['totalPhotos'],
             font:smFont,
             left:'0dp'
         });
@@ -232,7 +261,7 @@
         infoPanel.add(followerPanel);
         
         var followerCount = Ti.UI.createLabel({
-            text:profile['counts']['followed_by'],
+            text:profile['meta']['totalFollowers'],
             font:smFont,
             left:'0dp'
         });
@@ -254,7 +283,7 @@
         infoPanel.add(followingPanel);
         
         var followingCount = Ti.UI.createLabel({
-            text:profile['counts']['follows'],
+            text:profile['meta']['totalFollows'],
             font:smFont,
             left:'0dp'
         });
@@ -270,6 +299,7 @@
 
         tabledata.push(headerOutRow);
         
+        data = data['photos'];
         for (var i=0; i < data.length; i++) {
             var newRow = Titanium.UI.createTableViewRow({
                 top:'15dp',
@@ -279,7 +309,7 @@
                 layout:'vertical'
             });
             
-            var createdDate = data[i]['created_time'];
+            var createdDate = data[i]['photoTime'];
             var postDate = timeConverter(createdDate);
             
             var rowLabel = Ti.UI.createLabel({
@@ -291,12 +321,11 @@
             
             newRow.add(rowLabel);
             
-            if(data[i]['type'] =='video'){
-            }
-            if(data[i]['type'] == 'image' || data[i]['type'] =='video'){
-            	if ( data[i]['caption'] != null ){
+
+            if(1){
+            	if ( data[i]['title'] != null ){
 	                var statusLabel = Ti.UI.createLabel({
-	                    text:data[i]['caption']['text'],
+	                    text:data[i]['title'],
 	                    left:'5dp',
 	                    right:'5dp',
 	                    top:'5dp',
@@ -307,13 +336,13 @@
 				}
                 
                 var _picture = Ti.UI.createImageView({
-                    image:data[i]['images']['low_resolution']['url'],
+                    image:data[i]['mediumImage'],
                     width:'100%',
                 });
                 newRow.add(_picture);
                 
                 var likesLabel = Ti.UI.createLabel({
-                    text:data[i]['likes']['count'] + ' Likes',
+                    text:data[i]['additionalInfo']['likes']['likes'] + ' Likes',
                     left:'5dp',
                     right:'5dp',
                     bottom:'5dp',
